@@ -1,6 +1,7 @@
 namespace MobileBook.Function
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
     using System.Threading.Tasks;
@@ -11,27 +12,24 @@ namespace MobileBook.Function
     using Microsoft.Extensions.Logging;
 
     using MobileBook.Data.Mock;
+    using MobileBook.Models;
+    using MobileBook.Models.DTO;
 
     public static class GetBooks
     {
         [FunctionName("GetBooks")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "book/{genre:alpha?}")] HttpRequest req,
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "book/list/{genre:alpha?}")] HttpRequest req,
             string genre,
             ILogger log)
         {
-            if (string.IsNullOrWhiteSpace(genre))
-            {
-                return new OkObjectResult(BooksMock.Books);
-            }
-
+            IEnumerable<BookExtended> books = string.IsNullOrWhiteSpace(genre)
+                ? BooksMock.Books 
+                : BooksMock.Books
+                    .Where(b => string.Equals(b.GenreId, genre, StringComparison.OrdinalIgnoreCase));
             return new OkObjectResult(
-                BooksMock.Books.Where(
-                    b => string.Equals(
-                        b.GenreId,
-                        genre,
-                        StringComparison.OrdinalIgnoreCase))
-                .ToImmutableArray());
+                books.Select(b => new BookDetailsPartialDTO(b))
+                    .ToImmutableArray());
         }
     }
 }
