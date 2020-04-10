@@ -12,7 +12,7 @@ namespace MobileBook.Function
     {
         [FunctionName("GetGenres")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "genre")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "genre")] HttpRequest req,
             ILogger log)
         {
             return new OkObjectResult(GenresMock.Genres);

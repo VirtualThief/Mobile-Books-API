@@ -19,7 +19,7 @@ namespace MobileBook.Function
     {
         [FunctionName("GetBooks")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "book/list/{genre:alpha?}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "book/list/{genre:alpha?}")] HttpRequest req,
             string genre,
             ILogger log)
         {

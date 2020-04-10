@@ -15,7 +15,7 @@ namespace MobileBook.Function
     {
         [FunctionName("GetBookDetails")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "book/details/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "book/details/{id}")] HttpRequest req,
             string id,
             ILogger log)
         {
